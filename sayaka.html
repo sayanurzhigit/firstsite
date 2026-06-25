@@ -1,4 +1,343 @@
-dndjencjnfmc
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дала Жыры — Песня Степи</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(180deg, #1a0a2e 0%, #2d1b4e 20%, #6b3a1a 60%, #c4792a 80%, #e8a84a 100%);
+    overflow: hidden;
+    font-family: 'Cinzel', serif;
+    position: relative;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  #birds { z-index: 8; }
+  #stars { z-index: 2; }
+
+  .ornament-top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 80px;
+    background: rgba(140, 70, 10, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 3px solid #f0c060;
+    z-index: 10;
+  }
+
+  .ornament-bottom {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: rgba(140, 70, 10, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 3px solid #f0c060;
+    z-index: 10;
+  }
+
+  .ornament-svg { width: 100%; height: 60px; }
+
+  .title-block {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 20;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .title-kaz {
+    font-size: clamp(28px, 5vw, 64px);
+    color: #f0c060;
+    text-shadow: 0 0 30px rgba(240,192,96,0.8), 0 2px 8px rgba(0,0,0,0.8);
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .title-sub {
+    font-size: clamp(12px, 2vw, 20px);
+    color: #e8d4a0;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+    letter-spacing: 0.3em;
+    margin-top: 12px;
+    font-weight: 400;
+  }
+
+  .ornament-line {
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #f0c060, transparent);
+    margin: 16px auto;
+  }
+
+  .sun {
+    position: fixed;
+    bottom: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffe680 0%, #f0a030 50%, #c05010 100%);
+    box-shadow: 0 0 60px #f0a030, 0 0 120px rgba(240,160,48,0.4);
+    z-index: 5;
+    animation: sunPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes sunPulse {
+    0%, 100% { box-shadow: 0 0 60px #f0a030, 0 0 120px rgba(240,160,48,0.4); }
+    50%       { box-shadow: 0 0 90px #f0a030, 0 0 180px rgba(240,160,48,0.5); }
+  }
+
+  .moon {
+    position: fixed;
+    top: 110px;
+    right: 80px;
+    width: 60px;
+    height: 60px;
+    z-index: 5;
+    animation: moonGlow 6s ease-in-out infinite;
+  }
+
+  @keyframes moonGlow {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(200,220,255,0.6)); }
+    50%       { filter: drop-shadow(0 0 22px rgba(200,220,255,0.95)); }
+  }
+
+  .steppe-hills {
+    position: fixed;
+    bottom: 78px;
+    left: 0; right: 0;
+    height: 160px;
+    z-index: 6;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<canvas id="birds"></canvas>
+
+<!-- Верхний орнамент -->
+<div class="ornament-top">
+  <svg class="ornament-svg" viewBox="0 0 1200 60" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <pattern id="qazOrn" x="0" y="0" width="120" height="60" patternUnits="userSpaceOnUse">
+        <path d="M0 30 L20 10 L40 30 L20 50 Z" fill="none" stroke="#f0c060" stroke-width="1.5"/>
+        <path d="M40 30 L60 10 L80 30 L60 50 Z" fill="none" stroke="#f0c060" stroke-width="1.5"/>
+        <path d="M80 30 L100 10 L120 30 L100 50 Z" fill="none" stroke="#f0c060" stroke-width="1.5"/>
+        <circle cx="20" cy="30" r="4" fill="#f0c060"/>
+        <circle cx="60" cy="10" r="3" fill="#e8a050"/>
+        <circle cx="60" cy="50" r="3" fill="#e8a050"/>
+        <circle cx="100" cy="30" r="4" fill="#f0c060"/>
+        <line x1="20" y1="30" x2="60" y2="10" stroke="#c87830" stroke-width="0.5"/>
+        <line x1="60" y1="10" x2="100" y2="30" stroke="#c87830" stroke-width="0.5"/>
+        <line x1="20" y1="30" x2="60" y2="50" stroke="#c87830" stroke-width="0.5"/>
+        <line x1="60" y1="50" x2="100" y2="30" stroke="#c87830" stroke-width="0.5"/>
+        <path d="M20 30 Q40 20 60 30 Q80 40 100 30" fill="none" stroke="#f0c060" stroke-width="0.8" opacity="0.6"/>
+      </pattern>
+    </defs>
+    <rect width="1200" height="60" fill="url(#qazOrn)"/>
+    <text x="600" y="36" text-anchor="middle" font-family="Cinzel,serif" font-size="18" fill="#ffe090" letter-spacing="6">✦ ҚАЗАҚСТАН ✦</text>
+  </svg>
+</div>
+
+<!-- Холмы степи -->
+<svg class="steppe-hills" viewBox="0 0 1200 160" preserveAspectRatio="none">
+  <path fill="#3d2a0a" d="M0 160 L0 100 Q150 50 300 90 Q450 130 600 80 Q750 30 900 70 Q1050 110 1200 60 L1200 160 Z"/>
+  <path fill="#2a1a06" d="M0 160 L0 130 Q100 90 200 120 Q350 150 500 100 Q650 50 800 110 Q950 160 1100 90 L1200 100 L1200 160 Z"/>
+</svg>
+
+<!-- Солнце -->
+<div class="sun"></div>
+
+<!-- Луна -->
+<svg class="moon" viewBox="0 0 60 60">
+  <path d="M45 30 A15 15 0 1 1 30 15 A20 20 0 0 0 45 30Z" fill="#d4e8ff" opacity="0.95"/>
+  <circle cx="20" cy="15" r="1.5" fill="#ffffff"/>
+  <circle cx="30" cy="8"  r="1"   fill="#ffffff"/>
+</svg>
+
+<!-- Заголовок -->
+<div class="title-block">
+  <div class="title-kaz">ДАЛА ЖЫРЫ</div>
+  <div class="ornament-line"></div>
+  <div class="title-sub">ПЕСНЯ СТЕПИ</div>
+</div>
+
+<!-- Нижний орнамент -->
+<div class="ornament-bottom">
+  <svg class="ornament-svg" viewBox="0 0 1200 60" preserveAspectRatio="xMidYMid meet">
+    <rect width="1200" height="60" fill="url(#qazOrn)"/>
+    <g transform="translate(600,30)">
+      <path d="M-80 0 L-60 -8 L-40 0 L-60 8 Z" fill="#f0c060"/>
+      <path d="M-20 0 L0 -12 L20 0 L0 12 Z" fill="#f0c060" stroke="#c87830" stroke-width="1"/>
+      <path d="M40 0 L60 -8 L80 0 L60 8 Z" fill="#f0c060"/>
+      <circle cx="0"   cy="0" r="6" fill="#e8a050" stroke="#f0c060" stroke-width="1.5"/>
+      <circle cx="-60" cy="0" r="4" fill="#c87830"/>
+      <circle cx="60"  cy="0" r="4" fill="#c87830"/>
+    </g>
+  </svg>
+</div>
+
+<script>
+const starsCanvas = document.getElementById('stars');
+const sCtx = starsCanvas.getContext('2d');
+const birdsCanvas = document.getElementById('birds');
+const bCtx = birdsCanvas.getContext('2d');
+
+let W = window.innerWidth, H = window.innerHeight;
+
+function resize() {
+  W = window.innerWidth; H = window.innerHeight;
+  starsCanvas.width = birdsCanvas.width = W;
+  starsCanvas.height = birdsCanvas.height = H;
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* ---- Звёзды ---- */
+const stars = Array.from({length: 200}, () => ({
+  x: Math.random(),
+  y: Math.random() * 0.52,
+  r: Math.random() * 1.8 + 0.3,
+  a: Math.random(),
+  sp: Math.random() * 0.01 + 0.004
+}));
+
+function drawStars(t) {
+  sCtx.clearRect(0, 0, W, H);
+  stars.forEach(s => {
+    const alpha = 0.35 + 0.65 * Math.abs(Math.sin(t * s.sp * 3 + s.a * 10));
+    sCtx.beginPath();
+    sCtx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+    sCtx.fillStyle = `rgba(220,235,255,${alpha})`;
+    sCtx.fill();
+  });
+}
+
+/* ---- Птицы ---- */
+class Bird {
+  constructor(delayed) {
+    this.init(delayed);
+  }
+  init(delayed) {
+    this.x     = delayed ? Math.random() * W : -80;
+    this.baseY = H * (0.1 + Math.random() * 0.52);
+    this.y     = this.baseY;
+    this.speed = 0.7 + Math.random() * 1.5;
+    this.size  = 7 + Math.random() * 14;
+    this.phase = Math.random() * Math.PI * 2;
+    this.wSpd  = 0.07 + Math.random() * 0.08;
+    this.amp   = 15 + Math.random() * 28;
+    this.freq  = 0.0025 + Math.random() * 0.002;
+    this.opa   = 0.65 + Math.random() * 0.35;
+    this.color = Math.random() > 0.45 ? '#f0c060' : '#e8d4b0';
+    this.trail = [];
+  }
+  update() {
+    this.x += this.speed;
+    this.phase += this.wSpd;
+    this.y = this.baseY + Math.sin(this.x * this.freq + this.phase * 0.25) * this.amp;
+    this.trail.push({x: this.x, y: this.y});
+    if (this.trail.length > 14) this.trail.shift();
+    if (this.x > W + 100) this.init(false);
+  }
+  draw(ctx) {
+    const flap = Math.sin(this.phase);
+    const s    = this.size;
+
+    ctx.save();
+    ctx.globalAlpha = this.opa;
+    ctx.translate(this.x, this.y);
+
+    /* след */
+    if (this.trail.length > 3) {
+      ctx.beginPath();
+      ctx.moveTo(this.trail[0].x - this.x, this.trail[0].y - this.y);
+      for (let i = 1; i < this.trail.length; i++) {
+        ctx.lineTo(this.trail[i].x - this.x, this.trail[i].y - this.y);
+      }
+      ctx.globalAlpha = this.opa * 0.12;
+      ctx.strokeStyle = this.color;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.globalAlpha = this.opa;
+    }
+
+    ctx.strokeStyle = this.color;
+    ctx.fillStyle   = this.color;
+    ctx.lineWidth   = 1.6;
+    ctx.lineCap     = 'round';
+
+    const wu = flap * s * 0.95;
+
+    /* левое крыло */
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(-s*0.3, -s*0.1, -s*0.72, -wu*0.85, -s, -wu);
+    ctx.stroke();
+
+    /* правое крыло */
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(s*0.3, -s*0.1, s*0.72, -wu*0.85, s, -wu);
+    ctx.stroke();
+
+    /* тело */
+    ctx.beginPath();
+    ctx.ellipse(s*0.15, s*0.06, s*0.28, s*0.12, 0.15, 0, Math.PI*2);
+    ctx.fill();
+
+    /* клюв */
+    ctx.beginPath();
+    ctx.moveTo(s*0.38, s*0.05);
+    ctx.lineTo(s*0.60, s*0.02);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.restore();
+  }
+}
+
+const flock = [
+  ...Array.from({length: 6},  () => new Bird(true)),
+  ...Array.from({length: 10}, () => new Bird(false))
+];
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = Date.now() / 1000;
+  drawStars(t);
+  bCtx.clearRect(0, 0, W, H);
+  flock.forEach(b => { b.update(); b.draw(bCtx); });
+}
+
+animate();
+</script>
+</body>
+</html>
+
 
  
 
