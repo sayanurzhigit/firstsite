@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ботестамыр — Завод керамического кирпича</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --red:     #C0281C;
+  --red-dark:#8B1A11;
+  --red-light:#E53935;
+  --white:   #FFFFFF;
+  --off-white:#F9F5F3;
+  --gray:    #F2EEEC;
+  --dark:    #1A1A1A;
+  --mid:     #4A4A4A;
+  --border:  #E0D8D5;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--dark);
+  background: var(--off-white);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  background: rgba(26,26,26,0.95);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%;
+  height: 64px;
+  border-bottom: 2px solid var(--red);
+}
+
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem; font-weight:700;
+  color: var(--white);
+  letter-spacing: 0.05em;
+}
+.nav-logo span { color: var(--red-light); }
+
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a {
+  color: #ccc; text-decoration:none;
+  font-size:0.85rem; font-weight:500;
+  letter-spacing:0.05em; text-transform:uppercase;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--white); }
+
+.nav-cta {
+  background: var(--red);
+  color: var(--white) !important;
+  padding: 8px 20px;
+  border-radius: 4px;
+  transition: background .2s !important;
+}
+.nav-cta:hover { background: var(--red-dark) !important; color: var(--white) !important; }
+
+.burger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+.burger span { width:24px; height:2px; background:#fff; border-radius:2px; transition:.3s; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset:0;
+  background-image:
+    linear-gradient(135deg, rgba(140,20,10,0.82) 0%, rgba(20,10,8,0.75) 60%, rgba(192,40,28,0.55) 100%),
+    url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1800&q=80');
+  background-size: cover; background-position: center;
+  transform: scale(1.04);
+  animation: heroZoom 12s ease-in-out infinite alternate;
+}
+@keyframes heroZoom { from{transform:scale(1.04)} to{transform:scale(1.0)} }
+
+.hero-content {
+  position: relative; z-index:2;
+  text-align: center; padding: 0 20px; max-width:800px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: var(--red); color:#fff;
+  font-size:0.75rem; font-weight:600;
+  letter-spacing:0.2em; text-transform:uppercase;
+  padding: 6px 18px; border-radius:2px;
+  margin-bottom:1.5rem;
+}
+
+.hero h1 {
+  font-family:'Oswald',sans-serif;
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  font-weight:700; color:#fff;
+  line-height:1.05; letter-spacing:0.02em;
+  text-transform:uppercase;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  margin-bottom:1.2rem;
+}
+.hero h1 em { color: #FF8A80; font-style:normal; }
+
+.hero p {
+  color: rgba(255,255,255,0.88);
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  line-height:1.6; max-width:520px; margin:0 auto 2.5rem;
+}
+
+.hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+.btn-primary {
+  background: var(--red); color:#fff;
+  padding:14px 36px; border-radius:4px;
+  font-weight:600; font-size:0.95rem;
+  text-decoration:none; letter-spacing:0.05em;
+  text-transform:uppercase;
+  transition: background .2s, transform .15s;
+  border:none; cursor:pointer;
+}
+.btn-primary:hover { background:var(--red-dark); transform:translateY(-2px); }
+
+.btn-outline {
+  background:transparent; color:#fff;
+  padding:14px 36px; border-radius:4px;
+  font-weight:600; font-size:0.95rem;
+  text-decoration:none; letter-spacing:0.05em;
+  text-transform:uppercase;
+  border: 2px solid rgba(255,255,255,0.6);
+  transition: border-color .2s, transform .15s;
+  cursor:pointer;
+}
+.btn-outline:hover { border-color:#fff; transform:translateY(-2px); }
+
+.hero-stats {
+  position:absolute; bottom:0; left:0; right:0; z-index:2;
+  display:flex; justify-content:center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(192,40,28,0.4);
+}
+.stat-item {
+  padding:18px 40px;
+  text-align:center;
+  border-right: 1px solid rgba(255,255,255,0.12);
+}
+.stat-item:last-child { border-right:none; }
+.stat-num {
+  font-family:'Oswald',sans-serif;
+  font-size:2rem; font-weight:700; color:var(--red-light);
+}
+.stat-label { color:rgba(255,255,255,0.7); font-size:0.78rem; letter-spacing:0.05em; text-transform:uppercase; margin-top:2px; }
+
+/* ── SECTION ── */
+.section { padding: 90px 5%; }
+.section-alt { background: var(--white); }
+
+.section-header { text-align:center; margin-bottom:3.5rem; }
+.section-header h2 {
+  font-family:'Oswald',sans-serif;
+  font-size: clamp(1.8rem,4vw,2.8rem);
+  font-weight:700; text-transform:uppercase;
+  letter-spacing:0.04em; color:var(--dark);
+  margin-bottom:0.75rem;
+}
+.section-header h2 span { color:var(--red); }
+.section-header p { color:var(--mid); font-size:1rem; max-width:560px; margin:0 auto; line-height:1.65; }
+.red-line {
+  width:60px; height:4px; background:var(--red);
+  margin:1rem auto 0; border-radius:2px;
+}
+
+/* ── GALLERY (hero photos) ── */
+.gallery-grid {
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 240px 240px;
+  gap:12px;
+  max-width:1100px; margin:0 auto;
+}
+.gallery-img {
+  overflow:hidden; border-radius:6px;
+  position:relative;
+}
+.gallery-img img {
+  width:100%; height:100%; object-fit:cover;
+  transition: transform .5s;
+}
+.gallery-img:hover img { transform:scale(1.05); }
+.gallery-img:first-child { grid-row: 1/3; }
+
+.gallery-caption {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,0.75));
+  color:#fff; padding:14px 16px 10px;
+  font-size:0.82rem; font-weight:500; letter-spacing:0.04em;
+}
+
+/* ── PROCESS ── */
+.process-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+  gap:0; max-width:1100px; margin:0 auto;
+}
+
+.process-step {
+  padding:2.5rem 2rem;
+  border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  position:relative;
+  transition: background .2s;
+}
+.process-step:hover { background: rgba(192,40,28,0.04); }
+
+.step-num {
+  font-family:'Oswald',sans-serif;
+  font-size:3.5rem; font-weight:700;
+  color:rgba(192,40,28,0.1);
+  line-height:1; margin-bottom:0.5rem;
+  user-select:none;
+}
+.step-icon { font-size:2rem; margin-bottom:0.75rem; }
+.step-title {
+  font-family:'Oswald',sans-serif;
+  font-size:1.1rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.05em;
+  color:var(--dark); margin-bottom:0.75rem;
+}
+.step-desc { color:var(--mid); font-size:0.88rem; line-height:1.65; }
+
+/* ── PRODUCTS ── */
+.products-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+  gap:24px; max-width:1100px; margin:0 auto;
+}
+
+.product-card {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:8px; overflow:hidden;
+  transition: box-shadow .25s, transform .2s;
+  cursor:pointer;
+  position:relative;
+}
+.product-card:hover { box-shadow:0 12px 40px rgba(192,40,28,0.14); transform:translateY(-4px); }
+.product-card.selected {
+  border-color:var(--red);
+  box-shadow:0 0 0 2px var(--red), 0 12px 40px rgba(192,40,28,0.2);
+}
+
+.product-img {
+  height:200px; overflow:hidden;
+  background:#eee;
+}
+.product-img img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+.product-card:hover .product-img img { transform:scale(1.06); }
+
+.product-badge {
+  position:absolute; top:14px; left:14px;
+  background:var(--red); color:#fff;
+  font-size:0.7rem; font-weight:600;
+  padding:4px 10px; border-radius:3px;
+  letter-spacing:0.08em; text-transform:uppercase;
+}
+
+.product-body { padding:1.4rem 1.4rem 1.6rem; }
+.product-name {
+  font-family:'Oswald',sans-serif;
+  font-size:1.15rem; font-weight:700;
+  text-transform:uppercase; color:var(--dark);
+  margin-bottom:0.4rem;
+}
+.product-use {
+  color:var(--red); font-size:0.78rem;
+  font-weight:600; letter-spacing:0.08em;
+  text-transform:uppercase; margin-bottom:0.8rem;
+}
+.product-desc { color:var(--mid); font-size:0.86rem; line-height:1.6; margin-bottom:1.2rem; }
+.product-specs { display:flex; gap:0.6rem; flex-wrap:wrap; }
+.spec-tag {
+  background:var(--gray); color:var(--mid);
+  font-size:0.75rem; padding:3px 10px; border-radius:20px;
+}
+
+.select-btn {
+  display:block; width:100%; margin-top:1.2rem;
+  text-align:center;
+  padding:10px; border-radius:4px;
+  font-size:0.85rem; font-weight:600;
+  letter-spacing:0.05em; text-transform:uppercase;
+  border:2px solid var(--red); color:var(--red);
+  background:transparent; cursor:pointer;
+  transition:.2s;
+}
+.select-btn:hover, .product-card.selected .select-btn {
+  background:var(--red); color:#fff;
+}
+.product-card.selected .select-btn { pointer-events:none; }
+
+/* ── QUIZ ── */
+.quiz-wrap {
+  max-width:760px; margin:0 auto;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,0.08);
+}
+
+.quiz-progress { height:4px; background:var(--gray); }
+.quiz-bar { height:100%; background:var(--red); transition:width .4s; }
+
+.quiz-body { padding:2.5rem 3rem; }
+.quiz-step { display:none; }
+.quiz-step.active { display:block; }
+
+.quiz-q-num {
+  color:var(--red); font-size:0.75rem; font-weight:600;
+  letter-spacing:0.15em; text-transform:uppercase;
+  margin-bottom:0.5rem;
+}
+.quiz-question {
+  font-family:'Oswald',sans-serif;
+  font-size:1.5rem; font-weight:600;
+  color:var(--dark); margin-bottom:1.8rem; line-height:1.25;
+}
+
+.quiz-options { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.quiz-opt {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:14px 16px; border:2px solid var(--border);
+  border-radius:6px; cursor:pointer; transition:.2s;
+}
+.quiz-opt:hover { border-color:var(--red); background:rgba(192,40,28,0.04); }
+.quiz-opt.picked { border-color:var(--red); background:rgba(192,40,28,0.06); }
+.quiz-opt input[type=radio] { display:none; }
+.opt-dot {
+  width:18px; height:18px; min-width:18px;
+  border:2px solid var(--border); border-radius:50%;
+  margin-top:2px; transition:.2s;
+  display:flex; align-items:center; justify-content:center;
+}
+.quiz-opt.picked .opt-dot {
+  border-color:var(--red); background:var(--red);
+}
+.quiz-opt.picked .opt-dot::after {
+  content:''; width:6px; height:6px;
+  background:#fff; border-radius:50%;
+}
+.opt-label { font-size:0.9rem; color:var(--dark); line-height:1.4; }
+.opt-sub { font-size:0.77rem; color:var(--mid); margin-top:2px; }
+
+.quiz-nav {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1.5rem 3rem; border-top:1px solid var(--border);
+  background:var(--gray);
+}
+
+.btn-quiz-back {
+  background:none; border:none; color:var(--mid);
+  font-size:0.88rem; cursor:pointer; font-weight:500;
+  display:flex; align-items:center; gap:6px;
+  padding:0;
+}
+.btn-quiz-back:hover { color:var(--dark); }
+.btn-quiz-next {
+  background:var(--red); color:#fff;
+  border:none; padding:12px 32px;
+  border-radius:4px; font-weight:600;
+  font-size:0.88rem; cursor:pointer;
+  letter-spacing:0.05em; text-transform:uppercase;
+  transition:background .2s;
+}
+.btn-quiz-next:hover { background:var(--red-dark); }
+.btn-quiz-next:disabled { background:#ccc; cursor:not-allowed; }
+
+/* Quiz Result */
+.quiz-result {
+  display:none; padding:2.5rem 3rem; text-align:center;
+}
+.quiz-result.active { display:block; }
+.result-icon { font-size:3rem; margin-bottom:1rem; }
+.result-title {
+  font-family:'Oswald',sans-serif;
+  font-size:1.8rem; font-weight:700;
+  color:var(--dark); margin-bottom:0.5rem;
+}
+.result-brick {
+  display:inline-block;
+  background:var(--red); color:#fff;
+  font-weight:700; font-size:1.1rem;
+  padding:10px 28px; border-radius:4px;
+  margin:1rem 0 0.8rem;
+}
+.result-desc { color:var(--mid); font-size:0.9rem; line-height:1.65; max-width:440px; margin:0 auto 1.5rem; }
+.btn-restart {
+  background:none; border:2px solid var(--red); color:var(--red);
+  padding:10px 24px; border-radius:4px; cursor:pointer;
+  font-weight:600; font-size:0.85rem; text-transform:uppercase;
+  letter-spacing:0.05em; transition:.2s;
+  margin-right:12px;
+}
+.btn-restart:hover { background:var(--red); color:#fff; }
+
+/* ── CONTACT ── */
+.contact-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:48px; max-width:1000px; margin:0 auto;
+  align-items:start;
+}
+
+.contact-info h3 {
+  font-family:'Oswald',sans-serif;
+  font-size:1.8rem; font-weight:700;
+  color:var(--dark); margin-bottom:1rem;
+  text-transform:uppercase;
+}
+.contact-info p { color:var(--mid); line-height:1.7; margin-bottom:2rem; }
+
+.contact-detail {
+  display:flex; gap:12px; align-items:flex-start;
+  margin-bottom:1.2rem;
+}
+.contact-icon {
+  width:40px; height:40px; min-width:40px;
+  background:var(--red); color:#fff;
+  border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+}
+.contact-text { font-size:0.9rem; color:var(--dark); }
+.contact-text strong { display:block; font-weight:600; margin-bottom:2px; }
+.contact-text span { color:var(--mid); }
+
+.contact-form {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:10px; padding:2.5rem;
+  box-shadow:0 4px 24px rgba(0,0,0,0.06);
+}
+
+.form-row { margin-bottom:1.2rem; }
+.form-row label {
+  display:block; font-size:0.8rem; font-weight:600;
+  color:var(--dark); margin-bottom:6px;
+  letter-spacing:0.04em; text-transform:uppercase;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  width:100%; padding:11px 14px;
+  border:1.5px solid var(--border); border-radius:5px;
+  font-family:'Inter',sans-serif; font-size:0.92rem;
+  color:var(--dark); background:var(--off-white);
+  transition:border-color .2s;
+  outline:none;
+}
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus { border-color:var(--red); background:#fff; }
+.form-row textarea { resize:vertical; min-height:110px; }
+
+.selected-summary {
+  background:rgba(192,40,28,0.06);
+  border:1px solid rgba(192,40,28,0.2);
+  border-radius:5px; padding:10px 14px;
+  font-size:0.85rem; color:var(--red);
+  margin-bottom:1.2rem;
+  display:none;
+}
+.selected-summary.show { display:block; }
+
+.btn-submit {
+  width:100%; padding:14px;
+  background:var(--red); color:#fff;
+  border:none; border-radius:5px;
+  font-size:0.95rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.08em;
+  cursor:pointer; transition:background .2s, transform .15s;
+}
+.btn-submit:hover { background:var(--red-dark); transform:translateY(-1px); }
+
+.form-success {
+  display:none; text-align:center; padding:2rem 0;
+}
+.form-success.show { display:block; }
+.form-success .check { font-size:3rem; margin-bottom:1rem; }
+.form-success p { color:var(--mid); }
+.form-success strong { display:block; font-size:1.2rem; color:var(--dark); margin-bottom:0.5rem; }
+
+/* ── FOOTER ── */
+footer {
+  background:var(--dark);
+  border-top: 3px solid var(--red);
+  padding:2.5rem 5%;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:1rem;
+}
+.footer-logo {
+  font-family:'Oswald',sans-serif;
+  font-size:1.3rem; font-weight:700;
+  color:#fff;
+}
+.footer-logo span { color:var(--red-light); }
+footer p { color:#888; font-size:0.82rem; }
+.footer-links { display:flex; gap:1.5rem; }
+.footer-links a { color:#888; text-decoration:none; font-size:0.82rem; transition:color .2s; }
+.footer-links a:hover { color:#fff; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity:0; transform:translateY(30px);
+  transition: opacity .6s, transform .6s;
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── MOBILE ── */
+@media(max-width:900px) {
+  .nav-links { display:none; }
+  .burger { display:flex; }
+  .gallery-grid {
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto;
+  }
+  .gallery-img:first-child { grid-row:auto; }
+  .hero-stats { flex-wrap:wrap; }
+  .stat-item { padding:12px 20px; border-right:none; border-bottom:1px solid rgba(255,255,255,0.12); }
+  .quiz-options { grid-template-columns:1fr; }
+  .quiz-body { padding:2rem; }
+  .quiz-nav { padding:1.2rem 2rem; }
+  .contact-grid { grid-template-columns:1fr; }
+  footer { flex-direction:column; text-align:center; }
+  .footer-links { justify-content:center; }
+}
+@media(max-width:600px) {
+  .section { padding:60px 4%; }
+  .gallery-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Боте<span>стамыр</span></div>
+  <ul class="nav-links">
+    <li><a href="#gallery">Завод</a></li>
+    <li><a href="#process">Производство</a></li>
+    <li><a href="#products">Виды кирпича</a></li>
+    <li><a href="#quiz">Подбор</a></li>
+    <li><a href="#contact" class="nav-cta">Заказать</a></li>
+  </ul>
+  <div class="burger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Завод керамического кирпича</div>
+    <h1>Качество,<br>заложенное<br>в <em>каждом</em> кирпиче</h1>
+    <p>Молодой современный завод с передовым оборудованием. 5 видов кирпича по европейским стандартам. Прямые поставки без посредников.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Выбрать кирпич</a>
+      <a href="#quiz" class="btn-outline">Подобрать для меня</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">1.5</div>
+      <div class="stat-label">Года на рынке</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">40М</div>
+      <div class="stat-label">Штук в год</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Видов кирпича</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2400+</div>
+      <div class="stat-label">Клиентов</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section section-alt" id="gallery">
+  <div class="section-header reveal">
+    <h2>Наш <span>завод</span></h2>
+    <p>Современное производство полного цикла. От карьерной глины до готовой продукции — всё под одной крышей.</p>
+    <div class="red-line"></div>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-img">
+      <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80" alt="Производственный цех">
+      <div class="gallery-caption">📷 Производственный цех</div>
+    </div>
+    <div class="gallery-img">
+      <img src="https://images.unsplash.com/photo-1587582423116-ec07293f0395?w=600&q=80" alt="Красный кирпич">
+      <div class="gallery-caption">📷 Готовая продукция</div>
+    </div>
+    <div class="gallery-img">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Склад">
+      <div class="gallery-caption">📷 Склад готовой продукции</div>
+    </div>
+    <div class="gallery-img">
+      <img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=600&q=80" alt="Кирпичная кладка">
+      <div class="gallery-caption">📷 Кирпич на строительстве</div>
+    </div>
+    <div class="gallery-img">
+      <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600&q=80" alt="Строительство">
+      <div class="gallery-caption">📷 Объекты наших клиентов</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section" id="process">
+  <div class="section-header reveal">
+    <h2>Как мы <span>создаём</span> кирпич</h2>
+    <p>Весь производственный цикл — от добычи сырья до доставки заказчику — под нашим контролем.</p>
+    <div class="red-line"></div>
+  </div>
+  <div class="process-grid reveal">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <div class="step-icon">⛏️</div>
+      <div class="step-title">Добыча и подготовка глины</div>
+      <div class="step-desc">Карьерная глина добывается с собственных месторождений. Сырьё проходит лабораторный анализ на пластичность и содержание примесей. Глина вылёживается до 6 месяцев для равномерного увлажнения.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <div class="step-icon">🔨</div>
+      <div class="step-title">Дробление и очистка</div>
+      <div class="step-desc">Глиняная масса проходит через вальцевые дробилки и сито. Удаляются камни, корни и посторонние включения. Масса доводится до однородной консистенции с заданной влажностью 18–22%.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <div class="step-icon">🏭</div>
+      <div class="step-title">Формование кирпича</div>
+      <div class="step-desc">Подготовленная масса поступает в экструдер. Непрерывный глиняный брус режется на заготовки точных размеров автоматическими струнными резаками. Давление формования — до 20 МПа.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <div class="step-icon">🌬️</div>
+      <div class="step-title">Сушка</div>
+      <div class="step-desc">Сырой кирпич-сырец поступает в туннельные сушильные камеры. Температура сушки постепенно повышается от 40°C до 120°C. Процесс длится 24–72 часа — до остаточной влажности не более 5%.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">05</div>
+      <div class="step-icon">🔥</div>
+      <div class="step-title">Обжиг в печи</div>
+      <div class="step-desc">Высушенный кирпич обжигается в туннельных печах при температуре 950–1080°C. Длина печи — 120 м. Цикл обжига — 40–60 часов. Именно обжиг придаёт кирпичу прочность, морозостойкость и цвет.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">06</div>
+      <div class="step-icon">❄️</div>
+      <div class="step-title">Охлаждение и выгрузка</div>
+      <div class="step-desc">После зоны обжига кирпич медленно охлаждается в течение 20–30 часов. Резкое охлаждение исключено — это предотвращает трещины. Готовая продукция выгружается и складируется на поддонах.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">07</div>
+      <div class="step-icon">🔬</div>
+      <div class="step-title">Контроль качества</div>
+      <div class="step-desc">Каждая партия проходит лабораторные испытания: прочность на сжатие (М75–М300), водопоглощение, морозостойкость (F50–F100), геометрические размеры. Сертификация по ГОСТ 530-2012.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">08</div>
+      <div class="step-icon">🚚</div>
+      <div class="step-title">Упаковка и доставка</div>
+      <div class="step-desc">Кирпич упаковывается в термоусадочную плёнку на деревянных поддонах по 200–360 шт. Доставка собственным транспортом или самовывоз. Отгрузка в течение 3–5 дней после оплаты.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section section-alt" id="products">
+  <div class="section-header reveal">
+    <h2>Виды <span>кирпича</span></h2>
+    <p>5 видов кирпича для любых задач. Нажмите на карточку — она автоматически добавится в форму заявки.</p>
+    <div class="red-line"></div>
+  </div>
+  <div class="products-grid reveal" id="productsGrid">
+
+    <div class="product-card" onclick="selectProduct(this, 'Одинарный керамический кирпич М150')">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1587582423116-ec07293f0395?w=600&q=80" alt="Рядовой кирпич">
+      </div>
+      <div class="product-badge">Самый популярный</div>
+      <div class="product-body">
+        <div class="product-name">Одинарный керамический</div>
+        <div class="product-use">🏠 Несущие стены, перегородки</div>
+        <div class="product-desc">Классический строительный кирпич для возведения несущих конструкций жилых и промышленных зданий. Высокая прочность, хорошая теплоизоляция.</div>
+        <div class="product-specs">
+          <span class="spec-tag">250×120×65 мм</span>
+          <span class="spec-tag">М150</span>
+          <span class="spec-tag">F50</span>
+        </div>
+        <button class="select-btn">Выбрать</button>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="selectProduct(this, 'Полнотелый кирпич М200 (фундамент)')">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=600&q=80" alt="Полнотелый кирпич">
+      </div>
+      <div class="product-body">
+        <div class="product-name">Полнотелый М200</div>
+        <div class="product-use">🏗️ Фундаменты, цоколи</div>
+        <div class="product-desc">Максимальная прочность и влагостойкость. Незаменим для фундаментов, цокольных этажей, подвалов и конструкций с повышенными нагрузками.</div>
+        <div class="product-specs">
+          <span class="spec-tag">250×120×65 мм</span>
+          <span class="spec-tag">М200</span>
+          <span class="spec-tag">F75</span>
+        </div>
+        <button class="select-btn">Выбрать</button>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="selectProduct(this, 'Лицевой (облицовочный) кирпич')">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Лицевой кирпич">
+      </div>
+      <div class="product-badge">Хит продаж</div>
+      <div class="product-body">
+        <div class="product-name">Лицевой (облицовочный)</div>
+        <div class="product-use">✨ Фасады, декоративная кладка</div>
+        <div class="product-desc">Идеальная геометрия, гладкая или фактурная поверхность. Применяется для наружной облицовки зданий, создания эстетичного фасада без дополнительной отделки.</div>
+        <div class="product-specs">
+          <span class="spec-tag">250×120×65 мм</span>
+          <span class="spec-tag">М150</span>
+          <span class="spec-tag">F100</span>
+        </div>
+        <button class="select-btn">Выбрать</button>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="selectProduct(this, 'Пустотелый кирпич (утеплённый)')">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" alt="Пустотелый кирпич">
+      </div>
+      <div class="product-body">
+        <div class="product-name">Пустотелый</div>
+        <div class="product-use">🌡️ Наружные стены, утепление</div>
+        <div class="product-desc">Пустоты снижают вес и повышают теплоизоляцию на 25–30%. Оптимален для наружных стен с нормируемым сопротивлением теплопередаче. Экономия раствора до 20%.</div>
+        <div class="product-specs">
+          <span class="spec-tag">250×120×65 мм</span>
+          <span class="spec-tag">М100</span>
+          <span class="spec-tag">F35</span>
+        </div>
+        <button class="select-btn">Выбрать</button>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="selectProduct(this, 'Огнеупорный (шамотный) кирпич')">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600&q=80" alt="Огнеупорный кирпич">
+      </div>
+      <div class="product-body">
+        <div class="product-name">Огнеупорный (шамотный)</div>
+        <div class="product-use">🔥 Печи, камины, топки</div>
+        <div class="product-desc">Выдерживает температуры до 1350°C. Изготовлен из шамота с добавлением огнеупорных добавок. Применяется для кладки топок, дымоходов, печей и промышленных агрегатов.</div>
+        <div class="product-specs">
+          <span class="spec-tag">230×113×65 мм</span>
+          <span class="spec-tag">ША-5</span>
+          <span class="spec-tag">1350°C</span>
+        </div>
+        <button class="select-btn">Выбрать</button>
+      </div>
+    </div>
+
+
+
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="section" id="quiz">
+  <div class="section-header reveal">
+    <h2>Подберём кирпич <span>именно для вас</span></h2>
+    <p>Ответьте на 4 вопроса — мы порекомендуем оптимальный вид кирпича под ваши задачи.</p>
+    <div class="red-line"></div>
+  </div>
+
+  <div class="quiz-wrap reveal">
+    <div class="quiz-progress">
+      <div class="quiz-bar" id="quizBar" style="width:0%"></div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="quiz-body">
+      <div class="quiz-step active" id="q1">
+        <div class="quiz-q-num">Вопрос 1 из 4</div>
+        <div class="quiz-question">Что вы планируете строить?</div>
+        <div class="quiz-options">
+          <label class="quiz-opt" onclick="pickOpt(this,'q1','house')">
+            <input type="radio" name="q1" value="house">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Частный дом / коттедж<div class="opt-sub">До 3 этажей</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q1','commercial')">
+            <input type="radio" name="q1" value="commercial">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Коммерческое здание<div class="opt-sub">Склад, офис, магазин</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q1','fence')">
+            <input type="radio" name="q1" value="fence">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Забор / ограждение<div class="opt-sub">Декоративный или капитальный</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q1','fireplace')">
+            <input type="radio" name="q1" value="fireplace">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Печь / камин / мангал<div class="opt-sub">Высокотемпературные конструкции</div></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="quiz-step" id="q2">
+        <div class="quiz-q-num">Вопрос 2 из 4</div>
+        <div class="quiz-question">Какая часть объекта вас интересует?</div>
+        <div class="quiz-options">
+          <label class="quiz-opt" onclick="pickOpt(this,'q2','foundation')">
+            <input type="radio" name="q2" value="foundation">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Фундамент / цоколь<div class="opt-sub">Подземная и надземная база</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q2','walls')">
+            <input type="radio" name="q2" value="walls">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Наружные несущие стены<div class="opt-sub">Основная конструкция здания</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q2','facade')">
+            <input type="radio" name="q2" value="facade">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Фасадная облицовка<div class="opt-sub">Внешний декоративный слой</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q2','partition')">
+            <input type="radio" name="q2" value="partition">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Внутренние перегородки<div class="opt-sub">Разделение внутреннего пространства</div></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="quiz-step" id="q3">
+        <div class="quiz-q-num">Вопрос 3 из 4</div>
+        <div class="quiz-question">Какой у вас приоритет?</div>
+        <div class="quiz-options">
+          <label class="quiz-opt" onclick="pickOpt(this,'q3','strength')">
+            <input type="radio" name="q3" value="strength">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Максимальная прочность<div class="opt-sub">Надёжность и долговечность</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q3','thermal')">
+            <input type="radio" name="q3" value="thermal">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Теплоизоляция<div class="opt-sub">Снижение теплопотерь</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q3','aesthetics')">
+            <input type="radio" name="q3" value="aesthetics">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Эстетика и внешний вид<div class="opt-sub">Красивый фасад без доп. отделки</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q3','economy')">
+            <input type="radio" name="q3" value="economy">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Экономия бюджета<div class="opt-sub">Оптимальное соотношение цена/качество</div></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="quiz-step" id="q4">
+        <div class="quiz-q-num">Вопрос 4 из 4</div>
+        <div class="quiz-question">Сколько кирпича вам нужно?</div>
+        <div class="quiz-options">
+          <label class="quiz-opt" onclick="pickOpt(this,'q4','small')">
+            <input type="radio" name="q4" value="small">
+            <div class="opt-dot"></div>
+            <div class="opt-label">До 5 000 штук<div class="opt-sub">Небольшой проект, ремонт</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q4','medium')">
+            <input type="radio" name="q4" value="medium">
+            <div class="opt-dot"></div>
+            <div class="opt-label">5 000 – 50 000 штук<div class="opt-sub">Частный дом, пристройка</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q4','large')">
+            <input type="radio" name="q4" value="large">
+            <div class="opt-dot"></div>
+            <div class="opt-label">50 000 – 200 000 штук<div class="opt-sub">Многоквартирный дом, склад</div></div>
+          </label>
+          <label class="quiz-opt" onclick="pickOpt(this,'q4','xl')">
+            <input type="radio" name="q4" value="xl">
+            <div class="opt-dot"></div>
+            <div class="opt-label">Более 200 000 штук<div class="opt-sub">Крупный объект, оптовый заказ</div></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="quiz-result" id="quizResult">
+        <div class="result-icon">🎯</div>
+        <div class="result-title">Ваш кирпич найден!</div>
+        <p style="color:var(--mid);margin-bottom:0.5rem">Мы рекомендуем:</p>
+        <div class="result-brick" id="resultBrick">—</div>
+        <div class="result-desc" id="resultDesc"></div>
+        <button class="btn-restart" onclick="restartQuiz()">↩ Пройти снова</button>
+        <a href="#contact" class="btn-primary" style="text-decoration:none;display:inline-block;padding:12px 28px;">Заказать сейчас →</a>
+      </div>
+    </div>
+
+    <div class="quiz-nav" id="quizNav">
+      <button class="btn-quiz-back" id="backBtn" onclick="quizBack()" style="visibility:hidden">← Назад</button>
+      <button class="btn-quiz-next" id="nextBtn" onclick="quizNext()" disabled>Следующий вопрос →</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section section-alt" id="contact">
+  <div class="section-header reveal">
+    <h2>Оставьте <span>заявку</span></h2>
+    <p>Заполните форму — наш менеджер свяжется с вами в течение 30 минут в рабочее время.</p>
+    <div class="red-line"></div>
+  </div>
+
+  <div class="contact-grid reveal">
+    <div class="contact-info">
+      <h3>Свяжитесь<br>с нами</h3>
+      <p>Работаем без выходных. Отгружаем по всей стране. Заключаем договор и даём гарантию на всю партию.</p>
+
+      <div class="contact-detail">
+        <div class="contact-icon">📞</div>
+        <div class="contact-text">
+          <strong>Телефон / WhatsApp</strong>
+          <span>+7 (800) 555-35-35</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📧</div>
+        <div class="contact-text">
+          <strong>Электронная почта</strong>
+          <span>zakaz@botestamyr.kz</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div class="contact-text">
+          <strong>Адрес завода и склада</strong>
+          <span>ул. Промышленная, 14, г. Москва</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-text">
+          <strong>Режим работы</strong>
+          <span>Пн–Пт: 8:00–18:00 · Сб: 9:00–15:00</span>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;padding:1.5rem;background:rgba(192,40,28,0.08);border-left:3px solid var(--red);border-radius:4px;">
+        <div style="font-weight:700;color:var(--dark);margin-bottom:0.4rem">✅ Что входит в стоимость</div>
+        <div style="font-size:0.85rem;color:var(--mid);line-height:1.7">
+          · Сертификат качества на партию<br>
+          · Паллетная упаковка в плёнку<br>
+          · Погрузка на заводе<br>
+          · Доставка от 3 дней
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div id="formArea">
+        <div id="selectedSummary" class="selected-summary"></div>
+
+        <div class="form-row">
+          <label>Ваше имя *</label>
+          <input type="text" id="fname" placeholder="Иван Иванов">
+        </div>
+        <div class="form-row">
+          <label>Телефон *</label>
+          <input type="tel" id="fphone" placeholder="+7 (___) ___-__-__">
+        </div>
+        <div class="form-row">
+          <label>Электронная почта</label>
+          <input type="email" id="femail" placeholder="ivanov@mail.ru">
+        </div>
+        <div class="form-row">
+          <label>Вид кирпича</label>
+          <select id="fbrick">
+            <option value="">— Выбрать —</option>
+            <option>Одинарный керамический кирпич М150</option>
+            <option>Полнотелый кирпич М200 (фундамент)</option>
+            <option>Лицевой (облицовочный) кирпич</option>
+            <option>Пустотелый кирпич (утеплённый)</option>
+            <option>Огнеупорный (шамотный) кирпич</option>
+            <option>Помогите подобрать</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Количество (штук)</label>
+          <input type="text" id="fqty" placeholder="Например: 10 000">
+        </div>
+        <div class="form-row">
+          <label>Комментарий</label>
+          <textarea id="fcomment" placeholder="Расскажите о вашем объекте, сроках, адресе доставки..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="submitForm()">Отправить заявку →</button>
+        <p style="font-size:0.75rem;color:var(--mid);margin-top:10px;text-align:center">
+          Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
+        </p>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="check">✅</div>
+        <strong>Заявка принята!</strong>
+        <p>Наш менеджер позвонит вам в течение 30 минут.<br>Спасибо за доверие!</p>
+        <button class="btn-restart" onclick="resetForm()" style="margin-top:1.5rem">Отправить ещё одну</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Боте<span>стамыр</span></div>
+  <p>© 2024 Ботестамыр. Завод керамического кирпича.</p>
+  <div class="footer-links">
+    <a href="#home">Главная</a>
+    <a href="#products">Продукция</a>
+    <a href="#contact">Контакты</a>
+  </div>
+</footer>
+
+<script>
+/* ── NAV MOBILE ── */
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.flexDirection = 'column';
+  links.style.position = 'fixed';
+  links.style.top = '64px'; links.style.left = '0'; links.style.right = '0';
+  links.style.background = '#111'; links.style.padding = '1rem 5%';
+  links.style.zIndex = '999';
+}
+
+/* ── SCROLL REVEAL ── */
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+reveals.forEach(r => obs.observe(r));
+
+/* ── PRODUCT SELECT ── */
+let selectedProduct = '';
+function selectProduct(card, name) {
+  document.querySelectorAll('.product-card').forEach(c => {
+    c.classList.remove('selected');
+    c.querySelector('.select-btn').textContent = 'Выбрать';
+  });
+  card.classList.add('selected');
+  card.querySelector('.select-btn').textContent = '✓ Выбрано';
+  selectedProduct = name;
+  document.getElementById('fbrick').value = name;
+  const summary = document.getElementById('selectedSummary');
+  summary.textContent = '✓ Выбрано: ' + name;
+  summary.classList.add('show');
+}
+
+/* ── QUIZ ── */
+let currentQ = 1;
+const totalQ = 4;
+const answers = {};
+
+function pickOpt(el, q, val) {
+  el.closest('.quiz-step').querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('picked'));
+  el.classList.add('picked');
+  answers[q] = val;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function quizNext() {
+  if(currentQ < totalQ) {
+    document.getElementById('q'+currentQ).classList.remove('active');
+    currentQ++;
+    document.getElementById('q'+currentQ).classList.add('active');
+    document.getElementById('nextBtn').disabled = !answers['q'+currentQ];
+    document.getElementById('backBtn').style.visibility = 'visible';
+    document.getElementById('quizBar').style.width = ((currentQ-1)/totalQ*100)+'%';
+    if(currentQ === totalQ) document.getElementById('nextBtn').textContent = 'Узнать результат →';
+  } else {
+    showResult();
+  }
+}
+
+function quizBack() {
+  if(currentQ > 1) {
+    document.getElementById('q'+currentQ).classList.remove('active');
+    currentQ--;
+    document.getElementById('q'+currentQ).classList.add('active');
+    document.getElementById('nextBtn').disabled = false;
+    document.getElementById('nextBtn').textContent = currentQ===totalQ ? 'Узнать результат →' : 'Следующий вопрос →';
+    document.getElementById('quizBar').style.width = ((currentQ-1)/totalQ*100)+'%';
+    if(currentQ === 1) document.getElementById('backBtn').style.visibility = 'hidden';
+  }
+}
+
+function showResult() {
+  document.getElementById('q'+currentQ).classList.remove('active');
+  document.getElementById('quizResult').classList.add('active');
+  document.getElementById('quizNav').style.display = 'none';
+  document.getElementById('quizBar').style.width = '100%';
+
+  const obj = answers['q1'], part = answers['q2'], prio = answers['q3'];
+
+  let brick = '', desc = '';
+
+  if(obj === 'fireplace') {
+    brick = '🔥 Огнеупорный шамотный кирпич ША-5';
+    desc = 'Для печей, каминов и мангалов нужен только шамот. Выдерживает 1350°C, не трескается при перепадах температур. Мы поставляем его как в розницу, так и крупными партиями.';
+  } else if(part === 'foundation') {
+    brick = '🏗️ Полнотелый керамический кирпич М200';
+    desc = 'Для фундаментов и цоколей — максимальная прочность и водостойкость. Класс морозостойкости F75 обеспечит десятилетия надёжной службы без деформаций.';
+  } else if(part === 'facade' || prio === 'aesthetics') {
+    brick = '✨ Лицевой (облицовочный) кирпич М150';
+    desc = 'Идеальная геометрия, насыщенный цвет, не требует штукатурки. Ваш фасад будет выглядеть безупречно сразу после кладки — и через 50 лет.';
+  } else if(part === 'partition') {
+    brick = '🏢 Двойной силикатный кирпич М150';
+    desc = 'Для внутренних перегородок — отличная звукоизоляция и скорость кладки. Больший размер сокращает расход раствора и время работ.';
+  } else if(prio === 'thermal') {
+    brick = '🌡️ Пустотелый керамический кирпич М100';
+    desc = 'Воздушные каналы в теле кирпича снижают теплопотери на 25–30%. Оптимально для наружных стен жилых домов с требованиями к энергоэффективности.';
+  } else {
+    brick = '🏠 Одинарный керамический кирпич М150';
+    desc = 'Универсальный выбор для большинства задач. Надёжная прочность, хорошая теплоизоляция, доступная цена. Самый популярный кирпич в нашем ассортименте.';
+  }
+
+  document.getElementById('resultBrick').textContent = brick;
+  document.getElementById('resultDesc').textContent = desc;
+  document.getElementById('fbrick').value = brick.replace(/^.+? /,'');
+  const summary = document.getElementById('selectedSummary');
+  summary.textContent = '✓ Подобрано опросником: ' + brick;
+  summary.classList.add('show');
+}
+
+function restartQuiz() {
+  currentQ = 1;
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('quizResult').classList.remove('active');
+  document.getElementById('q1').classList.add('active');
+  document.getElementById('quizNav').style.display = 'flex';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = 'Следующий вопрос →';
+  document.getElementById('backBtn').style.visibility = 'hidden';
+  document.getElementById('quizBar').style.width = '0%';
+  document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('picked'));
+}
+
+/* ── FORM ── */
+function submitForm() {
+  const name = document.getElementById('fname').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  if(!name || !phone) {
+    alert('Пожалуйста, заполните имя и телефон.');
+    return;
+  }
+  document.getElementById('formArea').style.display = 'none';
+  document.getElementById('formSuccess').classList.add('show');
+}
+
+function resetForm() {
+  document.getElementById('formArea').style.display = 'block';
+  document.getElementById('formSuccess').classList.remove('show');
+  document.getElementById('fname').value = '';
+  document.getElementById('fphone').value = '';
+  document.getElementById('femail').value = '';
+  document.getElementById('fbrick').value = '';
+  document.getElementById('fqty').value = '';
+  document.getElementById('fcomment').value = '';
+}
+</script>
+</body>
+</html>

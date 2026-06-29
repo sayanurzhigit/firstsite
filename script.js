@@ -1,1 +1,0 @@
-document.getElementbyId("contact") .onclick=function(){alert  ("87473820021");} 
